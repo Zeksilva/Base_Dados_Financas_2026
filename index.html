@@ -237,9 +237,10 @@
                 <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-slate-800 p-3 sm:p-4 rounded-xl border border-slate-700">
                     <div class="flex flex-wrap items-center gap-2 sm:gap-3 w-full">
                         <input type="text" id="filtro-busca" placeholder="Pesquisar..." onkeyup="filtrarTabela()" class="bg-slate-900 border border-slate-700 text-xs sm:text-sm rounded-lg px-3 py-2 flex-grow sm:flex-grow-0 sm:w-48 focus:outline-none focus:border-emerald-500">
-                        <button onclick="abrirModalInclusao()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1.5 ml-auto sm:ml-0">
-                            <i class="fa-solid fa-plus"></i> Nova Ocorrência
-                        </button>
+                        <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1.5 ml-auto sm:ml-0">
+                            <i class="fa-solid fa-file-excel"></i> Importar Planilha (Excel)
+                            <input type="file" id="excel-file-lanc" accept=".xlsx, .xls, .csv" class="hidden" onchange="importarExcel(event)">
+                        </label>
                     </div>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 rounded-xl shadow overflow-hidden">
@@ -282,7 +283,7 @@
     <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-[11px] sm:text-xs py-4 px-4 mt-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
             <div class="flex items-center justify-center space-x-2"><span class="font-bold text-emerald-400 text-sm">Ezsoftware</span><span>&copy; 2026 - Todos os direitos reservados</span></div>
-            <div class="flex items-center space-x-2 text-slate-500"><span>Versão: <strong class="text-slate-300">v24.1 Cloud & Mobile</strong></span></div>
+            <div class="flex items-center space-x-2 text-slate-500"><span>Versão: <strong class="text-slate-300">v24.2 Cloud & Import</strong></span></div>
         </div>
     </footer>
 
@@ -318,7 +319,7 @@
             try {
                 const res = await fetch(API_URL, { redirect: "follow" });
                 const data = await res.json();
-                if (data && data.length > 0) {
+                if (data && Array.isArray(data) && data.length > 0) {
                     dadosGlobais = data;
                 } else {
                     carregarBackupAutomatico();
@@ -350,6 +351,71 @@
             }
         }
 
+        function importarExcel(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    let novosDados = [];
+                    let catAtual = "Essenciais (Fixas)";
+
+                    rows.forEach((r, idx) => {
+                        if (idx < 2) return; // Ignora cabeçalhos do Excel
+                        let desc = r[1] ? String(r[1]).trim() : "";
+                        let descUp = desc.toUpperCase();
+
+                        if (descUp.includes("RECEITAS") || descUp.includes("ENTRADA")) {
+                            catAtual = "Receita";
+                            return;
+                        } else if (descUp.includes("DESPESAS") || descUp.includes("SAÍDA")) {
+                            catAtual = "Essenciais (Fixas)";
+                            return;
+                        }
+
+                        if (!desc || descUp.includes("TOTAL") || descUp.includes("SALDO")) return;
+
+                        let mesesProv = {};
+                        let mesesReal = {};
+                        LISTA_MESES.forEach((m, mIdx) => {
+                            let val = parseFloat(r[3 + mIdx]) || 0;
+                            mesesProv[m] = val;
+                            mesesReal[m] = (mIdx > 10) ? 0 : val;
+                        });
+
+                        novosDados.push({
+                            id: idx,
+                            descricao: desc,
+                            categoria: catAtual,
+                            subcategoria: r[2] ? String(r[2]).trim() : "Geral",
+                            mesesProv: mesesProv,
+                            mesesReal: mesesReal
+                        });
+                    });
+
+                    if (novosDados.length > 0) {
+                        dadosGlobais = novosDados;
+                        preencherTabela();
+                        atualizarDashboards();
+                        salvarBackupAutomatico();
+                        alert('Planilha importada com sucesso!');
+                    } else {
+                        alert('Nenhum dado válido encontrado na planilha importada.');
+                    }
+                } catch (err) {
+                    console.error("Erro ao importar arquivo:", err);
+                    alert('Erro ao processar o arquivo Excel.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
         function salvarBackupAutomatico() {
             localStorage.setItem('gestao_financeira_backup_automatico', JSON.stringify({ dadosGlobais, estruturaCategorias }));
         }
@@ -359,7 +425,7 @@
             if (backup) {
                 try {
                     const parsed = JSON.parse(backup);
-                    if (parsed.dadosGlobais) dadosGlobais = parsed.dadosGlobais;
+                    if (parsed.dadosGlobais && parsed.dadosGlobais.length > 0) dadosGlobais = parsed.dadosGlobais;
                 } catch(e) { console.error(e); }
             }
         }
@@ -408,7 +474,7 @@
 
             let dadosFiltrados = dadosGlobais.filter(i => i.descricao.toLowerCase().includes(termo));
             if(dadosFiltrados.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Nenhum registro.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Nenhum registro encontrado.</td></tr>`;
                 return;
             }
 
