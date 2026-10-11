@@ -25,7 +25,7 @@
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col text-sm">
 
-    <!-- CABEÇALHO -->
+    <!-- CABEÇALHO MOBILE FRIENDLY -->
     <header class="bg-slate-800 border-b border-slate-700 shadow-lg p-3 sm:p-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
@@ -35,12 +35,12 @@
                     </div>
                     <div>
                         <h1 class="text-base sm:text-lg font-bold tracking-tight">Finanças 2026</h1>
-                        <p class="text-[10px] sm:text-xs text-slate-400">Sincronizado com Google Sheets</p>
+                        <p class="text-[10px] sm:text-xs text-emerald-400 font-medium">Sincronizado com Google Sheets</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Seleção de Período e Ações -->
+            <!-- Seleção de Período e Ações Responsivas -->
             <div class="flex flex-wrap items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
                 <div class="flex items-center bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 flex-grow sm:flex-grow-0">
                     <label for="seletor-mes" class="text-xs text-slate-400 mr-1.5 font-medium">Período:</label>
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="flex items-center gap-1.5">
-                    <button onclick="sincronizarComNuvem()" class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1" title="Salvar na Nuvem">
+                    <button onclick="sincronizarComNuvem()" class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1" title="Salvar Nuvem">
                         <i class="fa-solid fa-cloud-arrow-up"></i> <span class="hidden xs:inline">Salvar Nuvem</span>
                     </button>
                     <label class="cursor-pointer bg-blue-600 hover:bg-blue-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1" title="Importar">
@@ -78,7 +78,7 @@
         </div>
     </header>
 
-    <!-- MENU DE ABAS -->
+    <!-- MENU DE ABAS SCROLLÁVEL NO CELULAR -->
     <nav class="bg-slate-800/80 border-b border-slate-700/60 shadow sticky top-[57px] sm:top-[65px] z-40 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex space-x-2 sm:space-x-6 px-3 overflow-x-auto no-scrollbar">
             <button onclick="mudarAba('dashboard')" id="btn-dashboard" class="py-2.5 px-2 border-b-2 border-emerald-500 font-medium text-xs sm:text-sm text-emerald-400 transition flex items-center gap-1.5 whitespace-nowrap">
@@ -129,6 +129,7 @@
                 </div>
             </div>
 
+            <!-- DASHBOARD ANUAL -->
             <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
                 <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
                     <i class="fa-solid fa-chart-column text-emerald-400"></i> Visão de Custo e Receita Anual
@@ -173,16 +174,17 @@
             </div>
         </section>
 
-        <!-- ABA 2: INSIGHTS -->
+        <!-- ABA 2: INSIGHTS & ALERTAS -->
         <section id="aba-insights" class="hidden space-y-4 sm:space-y-6">
             <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow space-y-3">
                 <h3 class="text-base sm:text-lg font-semibold text-amber-400 flex items-center gap-2">
                     <i class="fa-solid fa-triangle-exclamation"></i> Alertas de Gastos Acima da Média
                 </h3>
                 <div id="container-alertas-media" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
-                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700 text-slate-400">Carregando alertas...</div>
+                    <div class="bg-slate-900/60 p-3 sm:p-4 rounded-lg border border-slate-700 text-slate-400">Carregando alertas...</div>
                 </div>
             </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow lg:col-span-1">
                     <h3 class="text-sm sm:text-base font-semibold mb-3 text-rose-400 flex items-center gap-2">
@@ -192,6 +194,7 @@
                         <li class="pt-2 text-slate-400 italic">Nenhum dado encontrado.</li>
                     </ul>
                 </div>
+
                 <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow lg:col-span-2 space-y-3">
                     <h3 class="text-base sm:text-lg font-semibold text-emerald-400 flex items-center gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Mapeamento de Oportunidades
@@ -203,7 +206,7 @@
             </div>
         </section>
 
-        <!-- ABA 3: RESERVA -->
+        <!-- ABA 3: RESERVA DE SEGURANÇA -->
         <section id="aba-reserva" class="hidden space-y-4 sm:space-y-6">
             <div class="bg-slate-800 border border-slate-700 p-4 sm:p-6 rounded-xl shadow space-y-4 sm:space-y-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
@@ -218,43 +221,93 @@
                         <h4 id="res-meta-reserva" class="text-lg sm:text-xl font-bold text-amber-400">R$ 0,00</h4>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 bg-slate-900 p-3 sm:p-4 rounded-xl border border-slate-700">
-                    <div><label class="block text-[11px] text-slate-400 mb-1">Custo Mensal</label><input type="number" id="reserva-custo-mensal" value="5000" oninput="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs"></div>
-                    <div><label class="block text-[11px] text-slate-400 mb-1">Meses Cobertura</label><select id="reserva-meses" onchange="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs text-slate-200"><option value="6" selected>6 Meses</option></select></div>
-                    <div><label class="block text-[11px] text-slate-400 mb-1">Valor Atual</label><input type="number" id="reserva-atual" value="2000" oninput="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs"></div>
-                    <div><label class="block text-[11px] text-slate-400 mb-1">Aporte Mensal</label><input type="number" id="reserva-aporte" value="500" oninput="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs"></div>
+                    <div>
+                        <label class="block text-[11px] sm:text-xs text-slate-400 mb-1">Custo Mensal (R$)</label>
+                        <input type="number" id="reserva-custo-mensal" value="5000" oninput="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] sm:text-xs text-slate-400 mb-1">Meses de Cobertura</label>
+                        <select id="reserva-meses" onchange="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs sm:text-sm text-slate-200">
+                            <option value="3">3 Meses (Mínimo)</option>
+                            <option value="6" selected>6 Meses (Recomendado)</option>
+                            <option value="12">12 Meses (Segurança)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] sm:text-xs text-slate-400 mb-1">Valor Atual (R$)</label>
+                        <input type="number" id="reserva-atual" value="2000" oninput="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] sm:text-xs text-slate-400 mb-1">Aporte Mensal (R$)</label>
+                        <input type="number" id="reserva-aporte" value="500" oninput="calcularReserva()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs sm:text-sm">
+                    </div>
                 </div>
+
                 <div class="space-y-2">
-                    <div class="flex justify-between text-xs font-semibold"><span class="text-slate-300">Progresso:</span><span id="reserva-pct-texto" class="text-emerald-400">0%</span></div>
-                    <div class="w-full bg-slate-900 rounded-full h-3.5 border border-slate-700 overflow-hidden"><div id="reserva-barra-progresso" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-3.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-300">Progresso da Meta:</span>
+                        <span id="reserva-pct-texto" class="text-emerald-400">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3.5 border border-slate-700 overflow-hidden">
+                        <div id="reserva-barra-progresso" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-3.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <p id="reserva-tempo-estimado" class="text-xs text-slate-400 pt-1"></p>
                 </div>
             </div>
         </section>
 
         <!-- ABA 4: LANÇAMENTOS -->
         <section id="aba-lancamentos" class="hidden space-y-4">
+            <!-- Sub-visão 1: Tabela / Planilha -->
             <div id="painel-tabela-lancamentos" class="space-y-3 sm:space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-slate-800 p-3 sm:p-4 rounded-xl border border-slate-700">
                     <div class="flex flex-wrap items-center gap-2 sm:gap-3 w-full">
                         <input type="text" id="filtro-busca" placeholder="Pesquisar..." onkeyup="filtrarTabela()" class="bg-slate-900 border border-slate-700 text-xs sm:text-sm rounded-lg px-3 py-2 flex-grow sm:flex-grow-0 sm:w-48 focus:outline-none focus:border-emerald-500">
-                        <label class="cursor-pointer bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1.5 ml-auto sm:ml-0">
-                            <i class="fa-solid fa-file-excel"></i> Importar Planilha (Excel)
-                            <input type="file" id="excel-file-lanc" accept=".xlsx, .xls, .csv" class="hidden" onchange="importarExcel(event)">
-                        </label>
+                        
+                        <div class="flex items-center gap-1 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5">
+                            <span class="text-[11px] sm:text-xs text-slate-400">Valor:</span>
+                            <select id="filtro-tipo-valor" onchange="filtrarTabela()" class="bg-transparent text-[11px] sm:text-xs text-emerald-400 font-semibold focus:outline-none">
+                                <option value="todos" class="bg-slate-800">Todos</option>
+                                <option value="maior_zero" class="bg-slate-800">&gt; R$ 0</option>
+                                <option value="maior_100" class="bg-slate-800">&gt; R$ 100</option>
+                                <option value="maior_1000" class="bg-slate-800">&gt; R$ 1.000</option>
+                            </select>
+                        </div>
+
+                        <button onclick="abrirModalInclusao()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1.5 ml-auto sm:ml-0">
+                            <i class="fa-solid fa-plus"></i> <span class="hidden xs:inline">Nova</span> Ocorrência
+                        </button>
+
+                        <button id="btn-excluir-selecionados" onclick="excluirSelecionados()" class="hidden bg-rose-600 hover:bg-rose-500 text-white px-3 py-2 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> (<span id="count-selecionados">0</span>)
+                        </button>
+
+                        <button onclick="excluirTodosVisiveis()" class="bg-slate-700 hover:bg-rose-900/60 text-rose-300 border border-rose-700/50 px-3 py-2 rounded-lg text-xs font-semibold transition shadow" title="Limpar">
+                            <i class="fa-solid fa-broom"></i>
+                        </button>
                     </div>
                 </div>
+
                 <div class="bg-slate-800 border border-slate-700 rounded-xl shadow overflow-hidden">
                     <div class="overflow-x-auto max-h-[550px] relative">
                         <table class="w-full text-left border-collapse text-xs sm:text-sm">
                             <thead class="bg-slate-900 text-slate-400 sticky top-0 uppercase text-[10px] sm:text-xs z-30 border-b border-slate-700">
                                 <tr>
-                                    <th class="p-2.5 sm:p-3 sticky-col-left left-0 w-10 text-center bg-slate-900"><input type="checkbox" id="check-todos" onchange="selecionarAlternarTodos(this)"></th>
+                                    <th class="p-2.5 sm:p-3 sticky-col-left left-0 w-10 text-center bg-slate-900 shadow-[2px_0_5px_rgba(0,0,0,0.3)]">
+                                        <input type="checkbox" id="check-todos" onchange="selecionarAlternarTodos(this)" class="rounded border-slate-700 text-emerald-500 cursor-pointer">
+                                    </th>
                                     <th class="p-2.5 sm:p-3 min-w-[180px]">Descrição</th>
                                     <th class="p-2.5 sm:p-3 min-w-[150px]">Categoria</th>
                                     <th class="p-2.5 sm:p-3 min-w-[170px]">Subcategoria</th>
+                                    <th class="p-2.5 sm:p-3 min-w-[130px]">Vencimento</th>
+                                    <th class="p-2.5 sm:p-3 min-w-[130px]">Data Pag.</th>
+                                    <th class="p-2.5 sm:p-3 min-w-[120px]">Resp. Gasto</th>
+                                    <th class="p-2.5 sm:p-3 min-w-[120px]">Resp. Pag.</th>
                                     <th class="p-2.5 sm:p-3 min-w-[120px] text-right">Prov. (R$)</th>
                                     <th class="p-2.5 sm:p-3 min-w-[120px] text-right">Real (R$)</th>
-                                    <th class="p-2.5 sm:p-3 sticky-col-right right-0 w-14 text-center bg-slate-950">Ação</th>
+                                    <th class="p-2.5 sm:p-3 sticky-col-right right-0 w-14 text-center bg-slate-950 shadow-[-2px_0_5px_rgba(0,0,0,0.3)]">Ação</th>
                                 </tr>
                             </thead>
                             <tbody id="tabela-corpo" class="divide-y divide-slate-700/60"></tbody>
@@ -263,38 +316,159 @@
                 </div>
             </div>
 
-            <!-- DETALHE DO ITEM -->
-            <div id="painel-detalhe-item" class="hidden space-y-4 bg-slate-800 border border-slate-700 p-4 sm:p-6 rounded-xl shadow-xl">
-                <div class="flex items-center gap-3 border-b border-slate-700 pb-3">
-                    <button onclick="voltarParaTabela()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-                    <h3 id="detalhe-titulo-item" class="text-base sm:text-lg font-bold text-emerald-400">Análise do Item</h3>
+            <!-- Sub-visão 2: Painel Analítico Detalhado do Item -->
+            <div id="painel-detalhe-item" class="hidden space-y-4 sm:space-y-6 bg-slate-800 border border-slate-700 p-4 sm:p-6 rounded-xl shadow-xl">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-700 pb-3">
+                    <div class="flex items-center gap-3">
+                        <button onclick="voltarParaTabela()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-left"></i> Voltar
+                        </button>
+                        <div>
+                            <h3 id="detalhe-titulo-item" class="text-base sm:text-lg font-bold text-emerald-400">Análise do Item</h3>
+                            <p id="detalhe-sub-item" class="text-[11px] sm:text-xs text-slate-400">Categoria e Subcategoria</p>
+                        </div>
+                    </div>
+                    <div id="detalhe-badge-tendencia" class="px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-slate-900 border border-slate-700">Tendência</div>
                 </div>
-                <div class="h-56"><canvas id="graficoItemDetalhe"></canvas></div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="bg-slate-900/80 border border-slate-700 p-3.5 rounded-xl">
+                        <span class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Média Acumulada</span>
+                        <h4 id="detalhe-media-val" class="text-lg sm:text-xl font-bold text-slate-200 mt-1">R$ 0,00</h4>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-700 p-3.5 rounded-xl">
+                        <span class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Menor Gasto</span>
+                        <h4 id="detalhe-menor-mes" class="text-lg sm:text-xl font-bold text-emerald-400 mt-1">-</h4>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-700 p-3.5 rounded-xl">
+                        <span class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Maior Gasto</span>
+                        <h4 id="detalhe-maior-mes" class="text-lg sm:text-xl font-bold text-rose-400 mt-1">-</h4>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-700 p-3.5 rounded-xl">
+                        <span class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Mês Atual (<span class="rotulo-mes-card">OUT</span>)</span>
+                        <h4 id="detalhe-mes-atual-val" class="text-lg sm:text-xl font-bold text-blue-400 mt-1">R$ 0,00</h4>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="bg-slate-900 border border-slate-700 p-3.5 rounded-xl lg:col-span-2">
+                        <h4 class="text-xs sm:text-sm font-semibold mb-3 text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-emerald-400"></i> Histórico Mensal de Gastos
+                        </h4>
+                        <div class="h-56 sm:h-64"><canvas id="graficoItemDetalhe"></canvas></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-700 p-3.5 rounded-xl lg:col-span-1 space-y-2">
+                        <h4 class="text-xs sm:text-sm font-semibold text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-table-list text-amber-400"></i> Detalhamento
+                        </h4>
+                        <div class="overflow-y-auto max-h-48 pr-1">
+                            <table class="w-full text-xs text-left">
+                                <thead class="text-slate-400 border-b border-slate-800">
+                                    <tr><th class="py-1">Mês</th><th class="py-1 text-right">Valor (R$)</th></tr>
+                                </thead>
+                                <tbody id="tabela-historico-item" class="divide-y divide-slate-800"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- ABA 5: CONFIGS -->
-        <section id="aba-config" class="hidden space-y-4">
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow"><h3 class="text-emerald-400 font-semibold">Configurações e Sincronização</h3><p class="text-xs text-slate-400 mt-1">Conectado diretamente ao Google Sheets em nuvem.</p></div>
+        <!-- ABA 5: CONFIGURAÇÕES -->
+        <section id="aba-config" class="hidden space-y-4 sm:space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-6 rounded-xl shadow space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base sm:text-lg font-semibold text-emerald-400"><i class="fa-solid fa-tags"></i> Categorias & Sub</h3>
+                        <button onclick="abrirModalCriarCategoria()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> Categoria
+                        </button>
+                    </div>
+                    <div id="lista-cat-sub-config" class="space-y-2.5 text-xs pt-1"></div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-6 rounded-xl shadow space-y-3">
+                    <h3 class="text-base sm:text-lg font-semibold text-emerald-400"><i class="fa-solid fa-users-gear"></i> Responsáveis</h3>
+                    <div class="flex gap-2 pt-1">
+                        <input type="text" id="novo-responsavel" placeholder="Novo responsável..." class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs sm:text-sm flex-grow">
+                        <button onclick="adicionarResponsavel()" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold">Cadastrar</button>
+                    </div>
+                    <ul id="lista-responsaveis-cadastrados" class="flex flex-wrap gap-2 pt-3"></ul>
+                </div>
+            </div>
         </section>
     </main>
 
     <!-- RODAPÉ -->
     <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-[11px] sm:text-xs py-4 px-4 mt-8">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
-            <div class="flex items-center justify-center space-x-2"><span class="font-bold text-emerald-400 text-sm">Ezsoftware</span><span>&copy; 2026 - Todos os direitos reservados</span></div>
-            <div class="flex items-center space-x-2 text-slate-500"><span>Versão: <strong class="text-slate-300">v24.2 Cloud & Import</strong></span></div>
+            <div class="flex items-center justify-center space-x-2">
+                <span class="font-bold text-emerald-400 text-sm tracking-wide">Ezsoftware</span>
+                <span>&copy; 2026 - Todos os direitos reservados</span>
+            </div>
+            <div class="flex items-center space-x-2 text-slate-500">
+                <span>Versão: <strong class="text-slate-300">v24.5 Cloud & Mobile</strong></span>
+            </div>
         </div>
     </footer>
+
+    <!-- MODAL INCLUSÃO DE LANÇAMENTO -->
+    <div id="modal-inclusao" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center hidden p-3">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 max-w-lg w-full shadow-2xl space-y-3">
+            <h3 class="text-base sm:text-lg font-semibold text-emerald-400">Incluir Nova Ocorrência</h3>
+            <input type="text" id="modal-desc" placeholder="Descrição" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <select id="modal-cat" onchange="atualizarSubcategoriasModal()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm"></select>
+                <select id="modal-subcat" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm"></select>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <input type="date" id="modal-venc" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm">
+                <select id="modal-resp-gasto" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm"></select>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5">
+                <input type="number" step="0.01" id="modal-prov" value="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm" placeholder="Prov.">
+                <input type="number" step="0.01" id="modal-real" value="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm" placeholder="Real">
+            </div>
+            <div class="flex justify-end gap-2 pt-3 border-t border-slate-700">
+                <button onclick="fecharModalInclusao()" class="bg-slate-700 px-4 py-2 rounded text-xs text-slate-300">Cancelar</button>
+                <button onclick="salvarNovaOcorrencia()" class="bg-emerald-600 px-4 py-2 rounded text-xs font-semibold text-white">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CATEGORIA -->
+    <div id="modal-crud-categoria" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center hidden p-3">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 max-w-sm w-full space-y-3 shadow-2xl">
+            <h3 id="titulo-modal-categoria" class="text-base font-semibold text-emerald-400">Nova Categoria</h3>
+            <input type="text" id="input-nome-categoria-modal" placeholder="Nome da Categoria" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm text-slate-100">
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="fecharModalCrudCategoria()" class="bg-slate-700 px-3.5 py-1.5 rounded text-xs text-slate-300">Cancelar</button>
+                <button onclick="salvarCategoriaModal()" class="bg-emerald-600 px-3.5 py-1.5 rounded text-xs font-semibold text-white">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SUBCATEGORIA -->
+    <div id="modal-crud-subcategoria" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center hidden p-3">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 max-w-sm w-full space-y-3 shadow-2xl">
+            <h3 id="titulo-modal-subcategoria" class="text-base font-semibold text-emerald-400">Nova Subcategoria</h3>
+            <input type="text" id="input-nome-subcategoria-modal" placeholder="Nome da Subcategoria" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs sm:text-sm text-slate-100">
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="fecharModalCrudSubcategoria()" class="bg-slate-700 px-3.5 py-1.5 rounded text-xs text-slate-300">Cancelar</button>
+                <button onclick="salvarSubcategoriaModal()" class="bg-emerald-600 px-3.5 py-1.5 rounded text-xs font-semibold text-white">Salvar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- SCRIPTS -->
     <script>
         Chart.register(ChartDataLabels);
 
+        // URL DO GOOGLE APPS SCRIPT
         const API_URL = "https://script.google.com/macros/s/AKfycbweBSroEpzCiW-cfe7cs5JIiNrPWcqzvNpBcDpHbjw3/exec";
 
         const LISTA_MESES = ['DEZ/2025', 'JAN', 'FEV', 'MAR', 'ABRIL', 'MAIO', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
         const MESES_FUTUROS = ['NOV', 'DEZ'];
+        const MESES_ATE_ATUAL = ['DEZ/2025', 'JAN', 'FEV', 'MAR', 'ABRIL', 'MAIO', 'JUN', 'JUL', 'AGO', 'SET', 'OUT'];
         
         let estruturaCategorias = {
             'Receita': ['Salários', 'Pró-Labore', 'Bonificações / PLR', 'Rendas Extras / Dividendos'],
@@ -304,9 +478,14 @@
             'Investimentos & Reserva': ['Aportes Reserva de Segurança', 'Investimentos de Longo Prazo', 'Amortização de Dívidas']
         };
 
+        let listaResponsaveis = ['Ezequias', 'Anne', 'Empresa', 'Conta Conjunta'];
         let dadosGlobais = [];
         let idsSelecionados = new Set();
         let mesSelecionado = 'OUT';
+
+        let categoriaEditando = null;
+        let subcatCategoriaPai = null;
+        let subcatEditando = null;
 
         let chartAnualInst = null, chartCategoriaInst = null, chartReceitaInst = null;
         let chartPontualidadeInst = null, chartGastoInst = null, chartPagamentoInst = null, chartItemDetalheInst = null;
@@ -315,6 +494,7 @@
             carregarDadosNuvem();
         });
 
+        // IMPORTAÇÃO AUTOMÁTICA DA NUVEM (GOOGLE SHEETS)
         async function carregarDadosNuvem() {
             try {
                 const res = await fetch(API_URL, { redirect: "follow" });
@@ -325,16 +505,19 @@
                     carregarBackupAutomatico();
                 }
             } catch(err) {
-                console.error("Erro ao carregar nuvem, usando cache local:", err);
+                console.error("Erro ao carregar dados da nuvem, usando cache local:", err);
                 carregarBackupAutomatico();
             } finally {
                 preencherTabela();
                 atualizarDashboards();
                 atualizarInsightsPoupar();
                 calcularReserva();
+                renderizarConfigCategorias();
+                renderizarResponsaveis();
             }
         }
 
+        // SALVAR / SINCRONIZAR COM A NUVEM
         async function sincronizarComNuvem() {
             salvarBackupAutomatico();
             try {
@@ -344,80 +527,15 @@
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(dadosGlobais)
                 });
-                alert('Dados enviados com sucesso para o Google Sheets!');
+                alert('Dados salvos e sincronizados com sucesso no Google Sheets!');
             } catch(err) {
                 console.error("Erro ao sincronizar com a nuvem:", err);
-                alert('Erro ao ligar à nuvem. As alterações foram salvas localmente.');
+                alert('Erro ao ligar à nuvem. Alterações salvas localmente.');
             }
         }
 
-        function importarExcel(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const data = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                    
-                    let novosDados = [];
-                    let catAtual = "Essenciais (Fixas)";
-
-                    rows.forEach((r, idx) => {
-                        if (idx < 2) return; // Ignora cabeçalhos do Excel
-                        let desc = r[1] ? String(r[1]).trim() : "";
-                        let descUp = desc.toUpperCase();
-
-                        if (descUp.includes("RECEITAS") || descUp.includes("ENTRADA")) {
-                            catAtual = "Receita";
-                            return;
-                        } else if (descUp.includes("DESPESAS") || descUp.includes("SAÍDA")) {
-                            catAtual = "Essenciais (Fixas)";
-                            return;
-                        }
-
-                        if (!desc || descUp.includes("TOTAL") || descUp.includes("SALDO")) return;
-
-                        let mesesProv = {};
-                        let mesesReal = {};
-                        LISTA_MESES.forEach((m, mIdx) => {
-                            let val = parseFloat(r[3 + mIdx]) || 0;
-                            mesesProv[m] = val;
-                            mesesReal[m] = (mIdx > 10) ? 0 : val;
-                        });
-
-                        novosDados.push({
-                            id: idx,
-                            descricao: desc,
-                            categoria: catAtual,
-                            subcategoria: r[2] ? String(r[2]).trim() : "Geral",
-                            mesesProv: mesesProv,
-                            mesesReal: mesesReal
-                        });
-                    });
-
-                    if (novosDados.length > 0) {
-                        dadosGlobais = novosDados;
-                        preencherTabela();
-                        atualizarDashboards();
-                        salvarBackupAutomatico();
-                        alert('Planilha importada com sucesso!');
-                    } else {
-                        alert('Nenhum dado válido encontrado na planilha importada.');
-                    }
-                } catch (err) {
-                    console.error("Erro ao importar arquivo:", err);
-                    alert('Erro ao processar o arquivo Excel.');
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
         function salvarBackupAutomatico() {
-            localStorage.setItem('gestao_financeira_backup_automatico', JSON.stringify({ dadosGlobais, estruturaCategorias }));
+            localStorage.setItem('gestao_financeira_backup_automatico', JSON.stringify({ dadosGlobais, estruturaCategorias, listaResponsaveis }));
         }
 
         function carregarBackupAutomatico() {
@@ -426,6 +544,8 @@
                 try {
                     const parsed = JSON.parse(backup);
                     if (parsed.dadosGlobais && parsed.dadosGlobais.length > 0) dadosGlobais = parsed.dadosGlobais;
+                    if (parsed.estruturaCategorias) estruturaCategorias = parsed.estruturaCategorias;
+                    if (parsed.listaResponsaveis) listaResponsaveis = parsed.listaResponsaveis;
                 } catch(e) { console.error(e); }
             }
         }
@@ -443,6 +563,7 @@
             if(aba === 'dashboard') atualizarDashboards();
             if(aba === 'insights') atualizarInsightsPoupar();
             if(aba === 'reserva') calcularReserva();
+            if(aba === 'config') { renderizarConfigCategorias(); renderizarResponsaveis(); }
         }
 
         function alterarFiltroMes() {
@@ -457,7 +578,8 @@
             if (dadosGlobais.length === 0) return alert('Sem dados.');
             let exportData = dadosGlobais.map(i => ({
                 'Descrição': i.descricao, 'Categoria': i.categoria, 'Subcategoria': i.subcategoria,
-                'Provisionado': obterValor(i, mesSelecionado, 'prov'), 'Real': obterValor(i, mesSelecionado, 'real')
+                'Vencimento': i.dataVencimento, 'Pagamento': i.dataPagamento,
+                'Resp. Gasto': i.responsavelGasto, 'Provisionado': obterValor(i, mesSelecionado, 'prov'), 'Real': obterValor(i, mesSelecionado, 'real')
             }));
             const worksheet = XLSX.utils.json_to_sheet(exportData);
             const workbook = XLSX.utils.book_new();
@@ -465,33 +587,369 @@
             XLSX.writeFile(workbook, `Gestao_Financeira_${mesSelecionado}.xlsx`);
         }
 
+        function importarExcel(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const workbook = XLSX.read(new Uint8Array(e.target.result), {type: 'array'});
+                const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header: 1});
+                processarPlanilhaAvançada(json);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function processarPlanilhaAvançada(rows) {
+            dadosGlobais = [];
+            let secaoAtual = 'Essenciais (Fixas)';
+            rows.forEach(row => {
+                let col0 = row[0] ? String(row[0]).trim().toUpperCase() : '';
+                let col1 = row[1] ? String(row[1]).trim() : '';
+                if (col0.includes('ENTRADA') || col0.includes('RECEITA') || col1.includes('ENTRADA') || col1.includes('RECEITA')) { secaoAtual = 'Receita'; return; }
+                else if (col0.includes('SAÍDA') || col0.includes('DESPESA') || col1.includes('SAÍDA') || col1.includes('DESPESA')) { secaoAtual = 'Essenciais (Fixas)'; return; }
+                let desc = row[1];
+                if (desc && typeof desc === 'string' && desc !== 'Descrição' && !desc.includes('ENTRADA') && !desc.includes('SAÍDA')) {
+                    let valoresProv = {}, valoresReal = {};
+                    LISTA_MESES.forEach((mKey, mIdx) => {
+                        let val = row[3 + mIdx], num = (typeof val === 'number' && !isNaN(val)) ? val : 0;
+                        valoresProv[mKey] = num;
+                        valoresReal[mKey] = MESES_FUTUROS.includes(mKey) ? 0 : num;
+                    });
+                    let cat = secaoAtual, descUpper = desc.toUpperCase();
+                    if (descUpper.includes('SALARIO') || descUpper.includes('RECEITA') || descUpper.includes('PRO-LABORE')) cat = 'Receita';
+                    dadosGlobais.push({
+                        id: dadosGlobais.length + 1, descricao: desc.trim(), categoria: cat,
+                        subcategoria: estruturaCategorias[cat]?.[0] || 'Geral', dataVencimento: '2026-10-15',
+                        dataPagamento: '2026-10-15', responsavelGasto: 'Ezequias', responsavelPagamento: 'Ezequias',
+                        mesesProv: valoresProv, mesesReal: valoresReal
+                    });
+                }
+            });
+            preencherTabela(); atualizarDashboards(); atualizarInsightsPoupar(); salvarBackupAutomatico(); alert('Importado com sucesso!');
+        }
+
+        function renderizarConfigCategorias() {
+            const container = document.getElementById('lista-cat-sub-config');
+            if(!container) return;
+            container.innerHTML = '';
+            Object.keys(estruturaCategorias).forEach(cat => {
+                let subsTags = estruturaCategorias[cat].map(s => `
+                    <span class="bg-slate-900 border border-slate-700 px-2 py-1 rounded flex items-center gap-1.5 text-[11px] text-slate-300 group">
+                        ${s}
+                        <span class="flex items-center gap-1 opacity-70 group-hover:opacity-100">
+                            <i class="fa-solid fa-pen text-[9px] cursor-pointer hover:text-amber-400" onclick="abrirModalEditarSubcategoria('${cat}', '${s}')"></i>
+                            <i class="fa-solid fa-trash text-[9px] cursor-pointer hover:text-rose-400" onclick="excluirSubcategoria('${cat}', '${s}')"></i>
+                        </span>
+                    </span>
+                `).join('');
+
+                container.innerHTML += `
+                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <strong class="text-emerald-400 text-xs sm:text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-folder"></i> ${cat}
+                            </strong>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="abrirModalCriarSubcategoria('${cat}')" class="text-[11px] bg-slate-800 text-emerald-400 border border-slate-600 px-1.5 py-0.5 rounded"><i class="fa-solid fa-plus"></i> Sub</button>
+                                <button onclick="abrirModalEditarCategoria('${cat}')" class="text-xs text-amber-400 p-1"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="excluirCategoria('${cat}')" class="text-xs text-rose-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 pt-1">${subsTags || '<span class="text-slate-500 italic text-[11px]">Sem subcategorias</span>'}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function abrirModalCriarCategoria() {
+            categoriaEditando = null;
+            document.getElementById('titulo-modal-categoria').innerText = "Nova Categoria";
+            document.getElementById('input-nome-categoria-modal').value = "";
+            document.getElementById('modal-crud-categoria').classList.remove('hidden');
+        }
+
+        function abrirModalEditarCategoria(cat) {
+            categoriaEditando = cat;
+            document.getElementById('titulo-modal-categoria').innerText = "Editar Categoria";
+            document.getElementById('input-nome-categoria-modal').value = cat;
+            document.getElementById('modal-crud-categoria').classList.remove('hidden');
+        }
+
+        function fecharModalCrudCategoria() { document.getElementById('modal-crud-categoria').classList.add('hidden'); }
+
+        function salvarCategoriaModal() {
+            let novoNome = document.getElementById('input-nome-categoria-modal').value.trim();
+            if (!novoNome) return alert('Informe o nome.');
+            if (categoriaEditando === null) {
+                if (estruturaCategorias[novoNome]) return alert('Categoria já existe.');
+                estruturaCategorias[novoNome] = ['Geral'];
+            } else {
+                if (categoriaEditando !== novoNome) {
+                    if (estruturaCategorias[novoNome]) return alert('Já existe.');
+                    estruturaCategorias[novoNome] = estruturaCategorias[categoriaEditando];
+                    delete estruturaCategorias[categoriaEditando];
+                    dadosGlobais.forEach(i => { if (i.categoria === categoriaEditando) i.categoria = novoNome; });
+                }
+            }
+            fecharModalCrudCategoria();
+            renderizarConfigCategorias();
+            preencherTabela();
+            atualizarDashboards();
+        }
+
+        function excluirCategoria(cat) {
+            if (Object.keys(estruturaCategorias).length <= 1) return alert('Mantenha ao menos uma.');
+            if (confirm(`Excluir "${cat}"?`)) {
+                delete estruturaCategorias[cat];
+                renderizarConfigCategorias();
+                preencherTabela();
+                atualizarDashboards();
+            }
+        }
+
+        function abrirModalCriarSubcategoria(cat) {
+            subcatCategoriaPai = cat;
+            subcatEditando = null;
+            document.getElementById('titulo-modal-subcategoria').innerText = `Nova Sub em (${cat})`;
+            document.getElementById('input-nome-subcategoria-modal').value = "";
+            document.getElementById('modal-crud-subcategoria').classList.remove('hidden');
+        }
+
+        function abrirModalEditarSubcategoria(cat, sub) {
+            subcatCategoriaPai = cat;
+            subcatEditando = sub;
+            document.getElementById('titulo-modal-subcategoria').innerText = `Editar Sub (${cat})`;
+            document.getElementById('input-nome-subcategoria-modal').value = sub;
+            document.getElementById('modal-crud-subcategoria').classList.remove('hidden');
+        }
+
+        function fecharModalCrudSubcategoria() { document.getElementById('modal-crud-subcategoria').classList.add('hidden'); }
+
+        function salvarSubcategoriaModal() {
+            let novoNome = document.getElementById('input-nome-subcategoria-modal').value.trim();
+            if (!novoNome) return alert('Informe o nome.');
+            let listaSubs = estruturaCategorias[subcatCategoriaPai];
+            if (subcatEditando === null) {
+                if (listaSubs.includes(novoNome)) return alert('Já existe.');
+                listaSubs.push(novoNome);
+            } else {
+                if (subcatEditando !== novoNome) {
+                    if (listaSubs.includes(novoNome)) return alert('Já existe.');
+                    let idx = listaSubs.indexOf(subcatEditando);
+                    if (idx !== -1) listaSubs[idx] = novoNome;
+                    dadosGlobais.forEach(i => { if (i.categoria === subcatCategoriaPai && i.subcategoria === subcatEditando) i.subcategoria = novoNome; });
+                }
+            }
+            fecharModalCrudSubcategoria();
+            renderizarConfigCategorias();
+            preencherTabela();
+        }
+
+        function excluirSubcategoria(cat, sub) {
+            let listaSubs = estruturaCategorias[cat];
+            if (listaSubs.length <= 1) return alert('Mantenha ao menos uma sub.');
+            if (confirm(`Excluir "${sub}"?`)) {
+                estruturaCategorias[cat] = listaSubs.filter(s => s !== sub);
+                renderizarConfigCategorias();
+                preencherTabela();
+            }
+        }
+
+        function renderizarResponsaveis() {
+            const container = document.getElementById('lista-responsaveis-cadastrados');
+            if(!container) return;
+            container.innerHTML = listaResponsaveis.map(r => `<li class="bg-slate-900 border border-slate-700 px-2.5 py-1 rounded text-xs">${r}</li>`).join('');
+        }
+
+        function adicionarResponsavel() {
+            let input = document.getElementById('novo-responsavel');
+            let nome = input.value.trim();
+            if (!nome) return;
+            if (!listaResponsaveis.includes(nome)) {
+                listaResponsaveis.push(nome);
+                input.value = '';
+                renderizarResponsaveis();
+                preencherTabela();
+            }
+        }
+
+        function abrirDetalheItem(id) {
+            const item = dadosGlobais.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('painel-tabela-lancamentos').classList.add('hidden');
+            document.getElementById('painel-detalhe-item').classList.remove('hidden');
+
+            document.getElementById('detalhe-titulo-item').innerText = item.descricao;
+            document.getElementById('detalhe-sub-item').innerText = `${item.categoria} > ${item.subcategoria} | Resp: ${item.responsavelGasto}`;
+
+            let somaAteAtual = 0, qtdMesesAteAtual = MESES_ATE_ATUAL.length;
+            let maxVal = -1, minVal = Infinity, mesMax = "-", mesMin = "-";
+
+            MESES_ATE_ATUAL.forEach(m => {
+                let v = item.mesesReal[m] || 0;
+                somaAteAtual += v;
+                if (v > maxVal) { maxVal = v; mesMax = m; }
+                if (v < minVal) { minVal = v; mesMin = m; }
+            });
+
+            let mediaVal = somaAteAtual / qtdMesesAteAtual;
+            document.getElementById('detalhe-media-val').innerText = `R$ ${mediaVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+            let valAtual = obterValor(item, mesSelecionado, 'real');
+            document.getElementById('detalhe-mes-atual-val').innerText = `R$ ${valAtual.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('detalhe-maior-mes').innerText = `${mesMax} (R$ ${maxVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})})`;
+            document.getElementById('detalhe-menor-mes').innerText = `${mesMin} (R$ ${minVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})})`;
+
+            let badgeTendencia = document.getElementById('detalhe-badge-tendencia');
+            if (valAtual > mediaVal * 1.05) {
+                badgeTendencia.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-rose-900/60 text-rose-300 border border-rose-700 flex items-center gap-1";
+                badgeTendencia.innerHTML = `<i class="fa-solid fa-arrow-trend-up"></i> Acima da Média`;
+            } else if (valAtual < mediaVal * 0.95) {
+                badgeTendencia.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-900/60 text-emerald-300 border border-emerald-700 flex items-center gap-1";
+                badgeTendencia.innerHTML = `<i class="fa-solid fa-arrow-trend-down"></i> Abaixo da Média`;
+            } else {
+                badgeTendencia.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-amber-900/60 text-amber-300 border border-amber-700 flex items-center gap-1";
+                badgeTendencia.innerHTML = `<i class="fa-solid fa-equals"></i> Na Média`;
+            }
+
+            let tbodyHist = document.getElementById('tabela-historico-item');
+            tbodyHist.innerHTML = LISTA_MESES.map(m => {
+                let v = item.mesesReal[m] || 0;
+                let ehFuturo = MESES_FUTUROS.includes(m);
+                return `
+                    <tr>
+                        <td class="py-1 text-slate-300">${m} ${ehFuturo ? '<span class="text-[9px] text-slate-500">(Futuro)</span>' : ''}</td>
+                        <td class="py-1 text-right font-semibold ${ehFuturo ? 'text-slate-500' : 'text-slate-200'}">R$ ${v.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            let valoresMeses = LISTA_MESES.map(m => item.mesesReal[m] || 0);
+            if (chartItemDetalheInst) chartItemDetalheInst.destroy();
+            chartItemDetalheInst = new Chart(document.getElementById('graficoItemDetalhe').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: LISTA_MESES,
+                    datasets: [{ label: 'Gasto Real', data: valoresMeses, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderWidth: 2, fill: true, tension: 0.3 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
+            });
+        }
+
+        function voltarParaTabela() {
+            document.getElementById('painel-detalhe-item').classList.add('hidden');
+            document.getElementById('painel-tabela-lancamentos').classList.remove('hidden');
+        }
+
+        function calcularReserva() {
+            let custo = parseFloat(document.getElementById('reserva-custo-mensal').value) || 0;
+            let meses = parseInt(document.getElementById('reserva-meses').value) || 6;
+            let atual = parseFloat(document.getElementById('reserva-atual').value) || 0;
+            let aporte = parseFloat(document.getElementById('reserva-aporte').value) || 1;
+
+            let meta = custo * meses;
+            let pct = meta > 0 ? Math.min(100, (atual / meta) * 100) : 0;
+
+            document.getElementById('res-meta-reserva').innerText = `R$ ${meta.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('reserva-pct-texto').innerText = `${pct.toFixed(1)}%`;
+            document.getElementById('reserva-barra-progresso').style.width = `${pct}%`;
+
+            let falta = meta - atual, tempoTxt = "";
+            if (falta <= 0) tempoTxt = "🎉 Meta atingida!";
+            else if (aporte > 0) tempoTxt = `Faltam R$ ${falta.toLocaleString('pt-BR', {minimumFractionDigits: 2})} (~${Math.ceil(falta / aporte)} meses).`;
+            document.getElementById('reserva-tempo-estimado').innerText = tempoTxt;
+        }
+
+        function atualizarInsightsPoupar() {
+            let containerAlertas = document.getElementById('container-alertas-media');
+            let listaGastos = document.getElementById('lista-maiores-gastos-insights');
+            let containerPoupar = document.getElementById('container-insights-poupar');
+            if(!containerAlertas) return;
+
+            let despesas = dadosGlobais.filter(i => i.categoria !== 'Receita');
+            if (dadosGlobais.length === 0) {
+                containerAlertas.innerHTML = `<div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700 text-slate-400">Sem dados.</div>`;
+                listaGastos.innerHTML = `<li class="text-slate-400 italic">Nenhum gasto.</li>`;
+                containerPoupar.innerHTML = `<p class="text-slate-400 italic">Importe dados para visualizar dicas.</p>`;
+                return;
+            }
+
+            let gastosMes = despesas.map(i => ({ desc: i.descricao, val: obterValor(i, mesSelecionado, 'real') })).sort((a,b) => b.val - a.val).slice(0, 5);
+            listaGastos.innerHTML = gastosMes.map(g => `
+                <li class="flex justify-between items-center py-1">
+                    <span class="text-slate-300 truncate max-w-[130px]">${g.desc}</span>
+                    <span class="font-bold text-rose-400">R$ ${g.val.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                </li>
+            `).join('') || `<li class="text-slate-400 italic">Sem gastos.</li>`;
+
+            containerAlertas.innerHTML = `
+                <div class="bg-slate-900/80 p-3 rounded-lg border border-amber-500/30 flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-exclamation text-amber-400 mt-0.5"></i>
+                    <div><strong class="text-amber-300 block">Estilo de Vida</strong><p class="text-[11px] text-slate-300">Monitore custos variáveis para manter abaixo de 30%.</p></div>
+                </div>
+                <div class="bg-slate-900/80 p-3 rounded-lg border border-purple-500/30 flex items-start gap-2.5">
+                    <i class="fa-solid fa-rocket text-purple-400 mt-0.5"></i>
+                    <div><strong class="text-purple-300 block">Investimentos</strong><p class="text-[11px] text-slate-300">Aportes consistentes aceleram sua liberdade financeira.</p></div>
+                </div>
+            `;
+
+            containerPoupar.innerHTML = `<p class="text-slate-300">💡 Revise assinaturas e tarifas recorrentes no Top 5 para otimizar despesas.</p>`;
+        }
+
         function preencherTabela() {
             const tbody = document.getElementById('tabela-corpo');
             if(!tbody) return;
             tbody.innerHTML = '';
             let termo = document.getElementById('filtro-busca') ? document.getElementById('filtro-busca').value.toLowerCase() : '';
+            let tipoValor = document.getElementById('filtro-tipo-valor') ? document.getElementById('filtro-tipo-valor').value : 'todos';
             const ehFuturo = MESES_FUTUROS.includes(mesSelecionado);
 
-            let dadosFiltrados = dadosGlobais.filter(i => i.descricao.toLowerCase().includes(termo));
+            let dadosFiltrados = dadosGlobais.filter(i => {
+                if (!i.descricao.toLowerCase().includes(termo)) return false;
+                let maiorVal = Math.max(obterValor(i, mesSelecionado, 'prov'), obterValor(i, mesSelecionado, 'real'));
+                if (tipoValor === 'maior_zero' && maiorVal <= 0) return false;
+                if (tipoValor === 'maior_100' && maiorVal <= 100) return false;
+                if (tipoValor === 'maior_1000' && maiorVal <= 1000) return false;
+                return true;
+            });
+
             if(dadosFiltrados.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Nenhum registro encontrado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="11" class="p-4 text-center text-slate-500">Nenhum registro encontrado.</td></tr>`;
                 return;
             }
 
             dadosFiltrados.forEach(item => {
                 let vProv = obterValor(item, mesSelecionado, 'prov');
                 let vReal = ehFuturo ? 0 : obterValor(item, mesSelecionado, 'real');
+                let optionsCat = Object.keys(estruturaCategorias).map(c => `<option value="${c}" ${item.categoria===c?'selected':''}>${c}</option>`).join('');
+                let subsDaCat = estruturaCategorias[item.categoria] || ['Geral'];
+                let optionsSub = subsDaCat.map(s => `<option value="${s}" ${item.subcategoria===s?'selected':''}>${s}</option>`).join('');
+                let optionsGasto = listaResponsaveis.map(r => `<option value="${r}" ${item.responsavelGasto===r?'selected':''}>${r}</option>`).join('');
+                let optionsPag = listaResponsaveis.map(r => `<option value="${r}" ${item.responsavelPagamento===r?'selected':''}>${r}</option>`).join('');
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-700/40 transition group text-xs";
                 tr.innerHTML = `
-                    <td class="p-2 sticky-col-left left-0 text-center bg-slate-800"><input type="checkbox" data-id="${item.id}" onchange="alternarSelecaoItem(${item.id}, this)" class="check-item rounded border-slate-700 text-emerald-500"></td>
-                    <td class="p-2"><span onclick="abrirDetalheItem(${item.id})" class="cursor-pointer text-emerald-400 hover:underline font-medium"><i class="fa-solid fa-chart-line text-[10px]"></i> ${item.descricao}</span></td>
-                    <td class="p-2">${item.categoria}</td>
-                    <td class="p-2">${item.subcategoria}</td>
-                    <td class="p-2 text-right font-semibold text-slate-300">R$ ${vProv.toFixed(2)}</td>
-                    <td class="p-2 text-right font-semibold text-slate-300">R$ ${vReal.toFixed(2)}</td>
-                    <td class="p-2 sticky-col-right right-0 text-center bg-slate-950"><button onclick="excluirOcorrencia(${item.id})" class="text-rose-400 p-1"><i class="fa-solid fa-trash-can"></i></button></td>
+                    <td class="p-2 sticky-col-left left-0 text-center bg-slate-800 group-hover:bg-[#1e293b]">
+                        <input type="checkbox" data-id="${item.id}" onchange="alternarSelecaoItem(${item.id}, this)" class="check-item rounded border-slate-700 text-emerald-500">
+                    </td>
+                    <td class="p-2">
+                        <span onclick="abrirDetalheItem(${item.id})" class="cursor-pointer text-emerald-400 hover:underline font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-chart-line text-[10px]"></i> ${item.descricao}
+                        </span>
+                    </td>
+                    <td class="p-2"><select onchange="atualizarCampo(${item.id}, 'categoria', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-xs text-slate-300">${optionsCat}</select></td>
+                    <td class="p-2"><select onchange="atualizarCampo(${item.id}, 'subcategoria', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-xs text-slate-300">${optionsSub}</select></td>
+                    <td class="p-2"><input type="date" value="${item.dataVencimento || '2026-10-15'}" onchange="atualizarCampo(${item.id}, 'dataVencimento', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1 py-1 text-xs text-slate-300"></td>
+                    <td class="p-2"><input type="date" value="${item.dataPagamento || '2026-10-15'}" ${ehFuturo?'disabled':''} onchange="atualizarCampo(${item.id}, 'dataPagamento', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1 py-1 text-xs text-slate-300"></td>
+                    <td class="p-2"><select onchange="atualizarCampo(${item.id}, 'responsavelGasto', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-xs text-slate-300">${optionsGasto}</select></td>
+                    <td class="p-2"><select onchange="atualizarCampo(${item.id}, 'responsavelPagamento', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1.5 py-1 text-xs text-slate-300">${optionsPag}</select></td>
+                    <td class="p-2 text-right"><input type="number" step="0.01" value="${vProv.toFixed(2)}" onchange="atualizarCampo(${item.id}, 'valorProv', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1 py-1 text-xs font-semibold text-slate-300 w-20 text-right"></td>
+                    <td class="p-2 text-right"><input type="number" step="0.01" value="${vReal.toFixed(2)}" ${ehFuturo?'disabled':''} onchange="atualizarCampo(${item.id}, 'valorReal', this.value)" class="bg-slate-900 border border-slate-700 rounded px-1 py-1 text-xs font-semibold w-20 text-right"></td>
+                    <td class="p-2 sticky-col-right right-0 text-center bg-slate-950 group-hover:bg-[#1e293b]">
+                        <button onclick="excluirOcorrencia(${item.id})" class="text-rose-400 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -506,59 +964,92 @@
             return (tipo === 'prov' ? item.mesesProv[mes] : item.mesesReal[mes]) || 0;
         }
 
+        function atualizarCampo(id, campo, valor) {
+            const item = dadosGlobais.find(i => i.id === id);
+            if (!item) return;
+            if (campo === 'descricao') item.descricao = valor;
+            else if (campo === 'categoria') {
+                item.categoria = valor;
+                item.subcategoria = estruturaCategorias[valor]?.[0] || 'Geral';
+                preencherTabela();
+            } else if (campo === 'subcategoria') item.subcategoria = valor;
+            else if (campo === 'dataVencimento') item.dataVencimento = valor;
+            else if (campo === 'dataPagamento') item.dataPagamento = valor;
+            else if (campo === 'valorProv') item.mesesProv[mesSelecionado] = parseFloat(valor) || 0;
+            else if (campo === 'valorReal') item.mesesReal[mesSelecionado] = parseFloat(valor) || 0;
+            else if (campo === 'responsavelGasto' || campo === 'responsavelPagamento') item[campo] = valor;
+            atualizarDashboards(); atualizarInsightsPoupar(); salvarBackupAutomatico();
+        }
+
+        function alternarSelecaoItem(id, checkEl) {
+            if(checkEl.checked) idsSelecionados.add(id); else idsSelecionados.delete(id);
+            let btn = document.getElementById('btn-excluir-selecionados');
+            if(btn) {
+                btn.classList.toggle('hidden', idsSelecionados.size === 0);
+                document.getElementById('count-selecionados').innerText = idsSelecionados.size;
+            }
+        }
+
         function selecionarAlternarTodos(masterCheck) {
             document.querySelectorAll('.check-item').forEach(cb => {
                 cb.checked = masterCheck.checked;
                 let id = parseInt(cb.dataset.id);
                 if(masterCheck.checked) idsSelecionados.add(id); else idsSelecionados.delete(id);
             });
-        }
-
-        function alternarSelecaoItem(id, checkEl) {
-            if(checkEl.checked) idsSelecionados.add(id); else idsSelecionados.delete(id);
+            let btn = document.getElementById('btn-excluir-selecionados');
+            if(btn) {
+                btn.classList.toggle('hidden', idsSelecionados.size === 0);
+                document.getElementById('count-selecionados').innerText = idsSelecionados.size;
+            }
         }
 
         function excluirOcorrencia(id) { 
             dadosGlobais = dadosGlobais.filter(i => i.id !== id); 
-            preencherTabela(); 
-            atualizarDashboards(); 
-            atualizarInsightsPoupar(); 
+            preencherTabela(); atualizarDashboards(); atualizarInsightsPoupar(); salvarBackupAutomatico(); 
         }
 
-        function abrirDetalheItem(id) {
-            const item = dadosGlobais.find(i => i.id === id);
-            if (!item) return;
-            document.getElementById('painel-tabela-lancamentos').classList.add('hidden');
-            document.getElementById('painel-detalhe-item').classList.remove('hidden');
-            document.getElementById('detalhe-titulo-item').innerText = item.descricao;
+        function excluirSelecionados() { 
+            dadosGlobais = dadosGlobais.filter(i => !idsSelecionados.has(i.id)); 
+            idsSelecionados.clear(); 
+            preencherTabela(); atualizarDashboards(); atualizarInsightsPoupar(); salvarBackupAutomatico(); 
+        }
 
-            let valoresMeses = LISTA_MESES.map(m => (item.mesesReal ? item.mesesReal[m] : 0) || 0);
-            if (chartItemDetalheInst) chartItemDetalheInst.destroy();
-            chartItemDetalheInst = new Chart(document.getElementById('graficoItemDetalhe').getContext('2d'), {
-                type: 'line',
-                data: { labels: LISTA_MESES, datasets: [{ label: 'Gasto Real', data: valoresMeses, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.3 }] },
-                options: { responsive: true, maintainAspectRatio: false }
+        function excluirTodosVisiveis() { 
+            if(confirm('Limpar todos os registros?')) { 
+                dadosGlobais = []; 
+                preencherTabela(); atualizarDashboards(); atualizarInsightsPoupar(); salvarBackupAutomatico(); 
+            } 
+        }
+
+        function abrirModalInclusao() {
+            document.getElementById('modal-desc').value = '';
+            document.getElementById('modal-cat').innerHTML = Object.keys(estruturaCategorias).map(c => `<option value="${c}">${c}</option>`).join('');
+            atualizarSubcategoriasModal();
+            document.getElementById('modal-resp-gasto').innerHTML = listaResponsaveis.map(r => `<option value="${r}">${r}</option>`).join('');
+            document.getElementById('modal-inclusao').classList.remove('hidden');
+        }
+
+        function atualizarSubcategoriasModal() {
+            let cat = document.getElementById('modal-cat').value;
+            document.getElementById('modal-subcat').innerHTML = (estruturaCategorias[cat] || ['Geral']).map(s => `<option value="${s}">${s}</option>`).join('');
+        }
+
+        function fecharModalInclusao() { document.getElementById('modal-inclusao').classList.add('hidden'); }
+
+        function salvarNovaOcorrencia() {
+            let desc = document.getElementById('modal-desc').value.trim();
+            if(!desc) return alert('Informe a descrição.');
+            let valProv = parseFloat(document.getElementById('modal-prov').value) || 0;
+            let valReal = parseFloat(document.getElementById('modal-real').value) || 0;
+            let mProv = {}, mReal = {};
+            LISTA_MESES.forEach(m => { mProv[m] = valProv; mReal[m] = valReal; });
+            dadosGlobais.push({
+                id: Date.now(), descricao: desc, categoria: document.getElementById('modal-cat').value,
+                subcategoria: document.getElementById('modal-subcat').value, dataVencimento: document.getElementById('modal-venc').value || '2026-10-15',
+                dataPagamento: '2026-10-15', responsavelGasto: document.getElementById('modal-resp-gasto').value,
+                responsavelPagamento: 'Ezequias', mesesProv: mProv, mesesReal: mReal
             });
-        }
-
-        function voltarParaTabela() {
-            document.getElementById('painel-detalhe-item').classList.add('hidden');
-            document.getElementById('painel-tabela-lancamentos').classList.remove('hidden');
-        }
-
-        function calcularReserva() {
-            let custo = parseFloat(document.getElementById('reserva-custo-mensal').value) || 0;
-            let atual = parseFloat(document.getElementById('reserva-atual').value) || 0;
-            let meta = custo * 6;
-            let pct = meta > 0 ? Math.min(100, (atual / meta) * 100) : 0;
-            document.getElementById('res-meta-reserva').innerText = `R$ ${meta.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('reserva-pct-texto').innerText = `${pct.toFixed(1)}%`;
-            document.getElementById('reserva-barra-progresso').style.width = `${pct}%`;
-        }
-
-        function atualizarInsightsPoupar() {
-            document.getElementById('container-alertas-media').innerHTML = `<div class="bg-slate-900/80 p-3 rounded-lg border border-amber-500/30 text-xs">Monitorando gastos e tendências em tempo real.</div>`;
-            document.getElementById('container-insights-poupar').innerHTML = `<p class="text-slate-300 text-xs">💡 Acompanhe os maiores gastos mensais para otimizar o orçamento.</p>`;
+            fecharModalInclusao(); preencherTabela(); atualizarDashboards(); atualizarInsightsPoupar(); salvarBackupAutomatico();
         }
 
         function atualizarDashboards() {
@@ -573,10 +1064,13 @@
             document.getElementById('card-desp-real').innerText = `R$ ${despReal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('card-taxa-arrecadacao').innerText = `${(recProv > 0 ? (recReal / recProv) * 100 : 0).toFixed(1)}%`;
 
+            let recAnualList = LISTA_MESES.map(m => dadosGlobais.filter(i => i.categoria === 'Receita').reduce((a,c) => a + (c.mesesProv[m]||0), 0));
+            let despAnualList = LISTA_MESES.map(m => dadosGlobais.filter(i => i.categoria !== 'Receita').reduce((a,c) => a + (c.mesesProv[m]||0), 0));
+
             if(chartAnualInst) chartAnualInst.destroy();
             chartAnualInst = new Chart(document.getElementById('graficoAnual').getContext('2d'), {
                 type: 'bar',
-                data: { labels: LISTA_MESES, datasets: [{ label: 'Receitas', data: LISTA_MESES.map(m=>dadosGlobais.filter(i=>i.categoria==='Receita').reduce((a,c)=>a+(c.mesesProv ? c.mesesProv[m]||0 : 0),0)), backgroundColor: '#10b981' }, { label: 'Despesas', data: LISTA_MESES.map(m=>dadosGlobais.filter(i=>i.categoria!=='Receita').reduce((a,c)=>a+(c.mesesProv ? c.mesesProv[m]||0 : 0),0)), backgroundColor: '#f43f5e' }] },
+                data: { labels: LISTA_MESES, datasets: [{ label: 'Receitas', data: recAnualList, backgroundColor: '#10b981' }, { label: 'Despesas', data: despAnualList, backgroundColor: '#f43f5e' }] },
                 options: { responsive: true, maintainAspectRatio: false }
             });
 
@@ -585,6 +1079,7 @@
                 let v = obterValor(i, mesSelecionado, 'real');
                 if(v > 0) catMap[i.categoria] = (catMap[i.categoria] || 0) + v;
             });
+
             if(chartCategoriaInst) chartCategoriaInst.destroy();
             chartCategoriaInst = new Chart(document.getElementById('graficoCategoria').getContext('2d'), {
                 type: 'doughnut',
@@ -602,7 +1097,7 @@
             if(chartPontualidadeInst) chartPontualidadeInst.destroy();
             chartPontualidadeInst = new Chart(document.getElementById('graficoPontualidade').getContext('2d'), {
                 type: 'pie',
-                data: { labels: ['Em Dia', 'Atrasado'], datasets: [{ data: [85, 15], backgroundColor: ['#10b981', '#f43f5e'] }] },
+                data: { labels: ['Em Dia', 'Atrasado'], datasets: [{ data: [75, 25], backgroundColor: ['#10b981', '#f43f5e'] }] },
                 options: { responsive: true, maintainAspectRatio: false }
             });
 
