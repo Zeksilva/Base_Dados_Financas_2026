@@ -338,13 +338,19 @@
             try {
                 const res = await fetch(API_URL, {
                     method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(dadosGlobais),
                     redirect: "follow"
                 });
-                alert('Dados salvos e sincronizados com sucesso no Google Sheets!');
+                const resultado = await res.json();
+                if(resultado.status === "sucesso") {
+                    alert('Dados salvos e sincronizados com sucesso no Google Sheets!');
+                } else {
+                    alert('Erro retornado pela planilha: ' + (resultado.mensagem || 'Desconhecido'));
+                }
             } catch(err) {
                 console.error("Erro ao sincronizar com a nuvem:", err);
-                alert('Erro ao sincronizar com a nuvem. Alterações salvas localmente.');
+                alert('Erro de conexão com a nuvem. Suas alterações foram salvas localmente no navegador.');
             }
         }
 
