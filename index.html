@@ -319,7 +319,7 @@
 
         async function carregarDadosNuvem() {
             try {
-                const res = await fetch(API_URL);
+                const res = await fetch(API_URL, { redirect: "follow" });
                 const data = await res.json();
                 if (data && data.length > 0) dadosGlobais = data;
             } catch(err) {
@@ -338,7 +338,8 @@
             try {
                 const res = await fetch(API_URL, {
                     method: "POST",
-                    body: JSON.stringify(dadosGlobais)
+                    body: JSON.stringify(dadosGlobais),
+                    redirect: "follow"
                 });
                 alert('Dados salvos e sincronizados com sucesso no Google Sheets!');
             } catch(err) {
@@ -398,8 +399,9 @@
 
         function preencherTabela() {
             const tbody = document.getElementById('tabela-corpo');
+            if(!tbody) return;
             tbody.innerHTML = '';
-            let termo = document.getElementById('filtro-busca').value.toLowerCase();
+            let termo = document.getElementById('filtro-busca') ? document.getElementById('filtro-busca').value.toLowerCase() : '';
             const ehFuturo = MESES_FUTUROS.includes(mesSelecionado);
 
             let dadosFiltrados = dadosGlobais.filter(i => i.descricao.toLowerCase().includes(termo));
@@ -430,9 +432,29 @@
         function filtrarTabela() { preencherTabela(); }
 
         function obterValor(item, mes, tipo = 'real') {
+            if (!item || !item.mesesProv) return 0;
             if (MESES_FUTUROS.includes(mes) && tipo === 'real') return 0;
             if (mes === 'TODOS') return Object.values(tipo === 'prov' ? item.mesesProv : item.mesesReal).reduce((a,b)=>a+b,0);
             return (tipo === 'prov' ? item.mesesProv[mes] : item.mesesReal[mes]) || 0;
+        }
+
+        function selecionarAlternarTodos(masterCheck) {
+            document.querySelectorAll('.check-item').forEach(cb => {
+                cb.checked = masterCheck.checked;
+                let id = parseInt(cb.dataset.id);
+                if(masterCheck.checked) idsSelecionados.add(id); else idsSelecionados.delete(id);
+            });
+        }
+
+        function alternarSelecaoItem(id, checkEl) {
+            if(checkEl.checked) idsSelecionados.add(id); else idsSelecionados.delete(id);
+        }
+
+        function excluirOcorrencia(id) { 
+            dadosGlobais = dadosGlobais.filter(i => i.id !== id); 
+            preencherTabela(); 
+            atualizarDashboards(); 
+            atualizarInsightsPoupar(); 
         }
 
         function abrirDetalheItem(id) {
@@ -442,7 +464,7 @@
             document.getElementById('painel-detalhe-item').classList.remove('hidden');
             document.getElementById('detalhe-titulo-item').innerText = item.descricao;
 
-            let valoresMeses = LISTA_MESES.map(m => item.mesesReal[m] || 0);
+            let valoresMeses = LISTA_MESES.map(m => (item.mesesReal ? item.mesesReal[m] : 0) || 0);
             if (chartItemDetalheInst) chartItemDetalheInst.destroy();
             chartItemDetalheInst = new Chart(document.getElementById('graficoItemDetalhe').getContext('2d'), {
                 type: 'line',
@@ -486,7 +508,7 @@
             if(chartAnualInst) chartAnualInst.destroy();
             chartAnualInst = new Chart(document.getElementById('graficoAnual').getContext('2d'), {
                 type: 'bar',
-                data: { labels: LISTA_MESES, datasets: [{ label: 'Receitas', data: LISTA_MESES.map(m=>dadosGlobais.filter(i=>i.categoria==='Receita').reduce((a,c)=>a+(c.mesesProv[m]||0),0)), backgroundColor: '#10b981' }, { label: 'Despesas', data: LISTA_MESES.map(m=>dadosGlobais.filter(i=>i.categoria!=='Receita').reduce((a,c)=>a+(c.mesesProv[m]||0),0)), backgroundColor: '#f43f5e' }] },
+                data: { labels: LISTA_MESES, datasets: [{ label: 'Receitas', data: LISTA_MESES.map(m=>dadosGlobais.filter(i=>i.categoria==='Receita').reduce((a,c)=>a+(c.mesesProv ? c.mesesProv[m]||0 : 0),0)), backgroundColor: '#10b981' }, { label: 'Despesas', data: LISTA_MESES.map(m=>dadosGlobais.filter(i=>i.categoria!=='Receita').reduce((a,c)=>a+(c.mesesProv ? c.mesesProv[m]||0 : 0),0)), backgroundColor: '#f43f5e' }] },
                 options: { responsive: true, maintainAspectRatio: false }
             });
 
