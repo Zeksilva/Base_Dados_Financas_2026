@@ -332,32 +332,25 @@
                 calcularReserva();
             }
         }
+async function sincronizarComNuvem() {
+    salvarBackupAutomatico();
+    try {
+        // Envio em segundo plano via POST sem redirecionar a página
+        await fetch(API_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(dadosGlobais)
+        });
 
-        async function sincronizarComNuvem() {
-            salvarBackupAutomatico();
-            try {
-                // Utiliza formulário oculto via POST para evitar bloqueio de CORS do navegador
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = API_URL;
-                form.target = '_blank'; // Abre uma aba invisível ou de suporte se necessário, ou podemos usar fetch com no-cors
-
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'dados';
-                input.value = JSON.stringify(dadosGlobais);
-                
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-                document.body.removeChild(form);
-
-                alert('Dados enviados para sincronização com o Google Sheets!');
-            } catch(err) {
-                console.error("Erro ao sincronizar com a nuvem:", err);
-                alert('Erro de conexão com a nuvem. Suas alterações foram salvas localmente no navegador.');
-            }
-        }
+        alert('Dados enviados com sucesso para o Google Sheets!');
+    } catch(err) {
+        console.error("Erro ao sincronizar com a nuvem:", err);
+        alert('Erro ao ligar à nuvem. As alterações foram salvas localmente.');
+    }
+}s
 
         function salvarBackupAutomatico() {
             localStorage.setItem('gestao_financeira_backup_automatico', JSON.stringify({ dadosGlobais, estruturaCategorias, listaResponsaveis }));
