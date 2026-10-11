@@ -317,33 +317,215 @@
             carregarDadosNuvem();
         });
 
-        async function carregarDadosNuvem() {
-            try {
-                const res = await fetch(API_URL, { redirect: "follow" });
-                const data = await res.json();
-                if (data && data.length > 0) dadosGlobais = data;
-            } catch(err) {
-                console.error("Erro ao carregar nuvem, usando cache local:", err);
-                carregarBackupAutomatico();
-            } finally {
-                preencherTabela();
-                atualizarDashboards();
-                atualizarInsightsPoupar();
-                calcularReserva();
-            }
-        }
-async function sincronizarComNuvem() {
-    salvarBackupAutomatico();
-    try {
-        // Envio em segundo plano via POST sem redirecionar a página
-        await fetch(API_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(dadosGlobais)
-        });
+        <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Avançado de Gestão Financeira 2026 - Ezsoftware</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plugin Chart.js Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- SheetJS (xlsx) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sticky-col-right { position: sticky; right: 0; background-color: #1e293b; z-index: 20; }
+        .sticky-col-left { position: sticky; left: 0; background-color: #1e293b; z-index: 20; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col text-sm">
+
+    <!-- CABEÇALHO -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-lg p-3 sm:p-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+                <div class="flex items-center space-x-2.5">
+                    <div class="bg-emerald-600 p-2 rounded-xl text-white shadow-md">
+                        <i class="fa-solid fa-chart-pie text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg font-bold tracking-tight">Finanças 2026</h1>
+                        <p class="text-[10px] sm:text-xs text-slate-400">Sincronizado com Google Sheets</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seleção de Período e Ações -->
+            <div class="flex flex-wrap items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+                <div class="flex items-center bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 flex-grow sm:flex-grow-0">
+                    <label for="seletor-mes" class="text-xs text-slate-400 mr-1.5 font-medium">Período:</label>
+                    <select id="seletor-mes" onchange="alterarFiltroMes()" class="bg-transparent text-emerald-400 font-semibold text-xs sm:text-sm focus:outline-none cursor-pointer w-full">
+                        <option value="TODOS" class="bg-slate-800 text-slate-100">Visão Completa (Ano)</option>
+                        <option value="DEZ/2025" class="bg-slate-800 text-slate-100">Dezembro / 2025</option>
+                        <option value="JAN" class="bg-slate-800 text-slate-100">Janeiro / 2026</option>
+                        <option value="FEV" class="bg-slate-800 text-slate-100">Fevereiro / 2026</option>
+                        <option value="MAR" class="bg-slate-800 text-slate-100">Março / 2026</option>
+                        <option value="ABRIL" class="bg-slate-800 text-slate-100">Abril / 2026</option>
+                        <option value="MAIO" class="bg-slate-800 text-slate-100">Maio / 2026</option>
+                        <option value="JUN" class="bg-slate-800 text-slate-100">Junho / 2026</option>
+                        <option value="JUL" class="bg-slate-800 text-slate-100">Julho / 2026</option>
+                        <option value="AGO" class="bg-slate-800 text-slate-100">Agosto / 2026</option>
+                        <option value="SET" class="bg-slate-800 text-slate-100">Setembro / 2026</option>
+                        <option value="OUT" class="bg-slate-800 text-slate-100" selected>Outubro / 2026 (Atual)</option>
+                        <option value="NOV" class="bg-slate-800 text-slate-100">Novembro / 2026 (Futuro)</option>
+                        <option value="DEZ" class="bg-slate-800 text-slate-100">Dezembro / 2026 (Futuro)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <button onclick="sincronizarComNuvem()" class="bg-amber-600 hover:bg-amber-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1" title="Salvar na Nuvem">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> <span class="hidden xs:inline">Salvar Nuvem</span>
+                    </button>
+                    <label class="cursor-pointer bg-blue-600 hover:bg-blue-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1" title="Importar">
+                        <i class="fa-solid fa-file-excel"></i> <span class="hidden xs:inline">Imp.</span>
+                        <input type="file" id="excel-file" accept=".xlsx, .xls, .csv" class="hidden" onchange="importarExcel(event)">
+                    </label>
+                    <button onclick="exportarExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition shadow flex items-center gap-1" title="Exportar">
+                        <i class="fa-solid fa-download"></i> <span class="hidden xs:inline">Exp.</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MENU DE ABAS -->
+    <nav class="bg-slate-800/80 border-b border-slate-700/60 shadow sticky top-[57px] sm:top-[65px] z-40 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex space-x-2 sm:space-x-6 px-3 overflow-x-auto no-scrollbar">
+            <button onclick="mudarAba('dashboard')" id="btn-dashboard" class="py-2.5 px-2 border-b-2 border-emerald-500 font-medium text-xs sm:text-sm text-emerald-400 transition flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-gauge"></i> Dashboards
+            </button>
+            <button onclick="mudarAba('insights')" id="btn-insights" class="py-2.5 px-2 border-b-2 border-transparent font-medium text-xs sm:text-sm text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-lightbulb"></i> Insights
+            </button>
+            <button onclick="mudarAba('reserva')" id="btn-reserva" class="py-2.5 px-2 border-b-2 border-transparent font-medium text-xs sm:text-sm text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-shield-halved"></i> Reserva
+            </button>
+            <button onclick="mudarAba('lancamentos')" id="btn-lancamentos" class="py-2.5 px-2 border-b-2 border-transparent font-medium text-xs sm:text-sm text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-list-check"></i> Lançamentos
+            </button>
+            <button onclick="mudarAba('config')" id="btn-config" class="py-2.5 px-2 border-b-2 border-transparent font-medium text-xs sm:text-sm text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-gear"></i> Configs
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto p-3 sm:p-6 flex-grow w-full space-y-4 sm:space-y-6">
+
+        <!-- ABA 1: DASHBOARDS -->
+        <section id="aba-dashboard" class="space-y-4 sm:space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="bg-slate-800 border border-slate-700 p-3.5 sm:p-4 rounded-xl shadow">
+                    <p class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Receita Prov x Real (<span class="rotulo-mes-card">OUT</span>)</p>
+                    <div class="mt-1 flex items-baseline justify-between">
+                        <span id="card-rec-prov" class="text-base sm:text-lg font-bold text-slate-300">R$ 0,00</span>
+                        <span id="card-rec-real" class="text-lg sm:text-xl font-bold text-emerald-400">R$ 0,00</span>
+                    </div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-3.5 sm:p-4 rounded-xl shadow">
+                    <p class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Despesa Prov x Real (<span class="rotulo-mes-card">OUT</span>)</p>
+                    <div class="mt-1 flex items-baseline justify-between">
+                        <span id="card-desp-prov" class="text-base sm:text-lg font-bold text-slate-300">R$ 0,00</span>
+                        <span id="card-desp-real" class="text-lg sm:text-xl font-bold text-rose-400">R$ 0,00</span>
+                    </div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-3.5 sm:p-4 rounded-xl shadow">
+                    <p class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Taxa de Arrecadação</p>
+                    <h3 id="card-taxa-arrecadacao" class="text-xl sm:text-2xl font-bold text-blue-400 mt-1">0%</h3>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-3.5 sm:p-4 rounded-xl shadow">
+                    <p class="text-[11px] sm:text-xs text-slate-400 uppercase font-semibold">Pontualidade nos Pagamentos</p>
+                    <h3 id="card-pct-em-dia" class="text-xl sm:text-2xl font-bold text-amber-400 mt-1">0% em dia</h3>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
+                <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-column text-emerald-400"></i> Visão de Custo e Receita Anual
+                </h3>
+                <div class="h-64 sm:h-80"><canvas id="graficoAnual"></canvas></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
+                    <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-purple-400"></i> Distribuição por Categoria (<span class="rotulo-mes-card">OUT</span>)
+                    </h3>
+                    <div class="h-56 sm:h-64"><canvas id="graficoCategoria"></canvas></div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
+                    <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i> Desempenho da Receita
+                    </h3>
+                    <div class="h-56 sm:h-64"><canvas id="graficoReceitaArrecadada"></canvas></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
+                    <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Pontualidade
+                    </h3>
+                    <div class="h-52 sm:h-60"><canvas id="graficoPontualidade"></canvas></div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
+                    <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-user-tag text-blue-400"></i> Resp. pelo Gasto
+                    </h3>
+                    <div class="h-52 sm:h-60"><canvas id="graficoRespGasto"></canvas></div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow">
+                    <h3 class="text-sm sm:text-base font-semibold mb-3 text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-credit-card text-purple-400"></i> Resp. pelo Pagamento
+                    </h3>
+                    <div class="h-52 sm:h-60"><canvas id="graficoRespPagamento"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 2: INSIGHTS -->
+        <section id="aba-insights" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow space-y-3">
+                <h3 class="text-base sm:text-lg font-semibold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Alertas de Gastos Acima da Média
+                </h3>
+                <div id="container-alertas-media" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
+                    <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700 text-slate-400">Carregando alertas...</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow lg:col-span-1">
+                    <h3 class="text-sm sm:text-base font-semibold mb-3 text-rose-400 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-trend-up"></i> Top 5 Maiores Gastos (<span class="rotulo-mes-card">OUT</span>)
+                    </h3>
+                    <ul id="lista-maiores-gastos-insights" class="divide-y divide-slate-700 text-xs sm:text-sm space-y-2">
+                        <li class="pt-2 text-slate-400 italic">Nenhum dado encontrado.</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-4 sm:p-5 rounded-xl shadow lg:col-span-2 space-y-3">
+                    <h3 class="text-base sm:text-lg font-semibold text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Mapeamento de Oportunidades
+                    </h3>
+                    <div id="container-insights-poupar" class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+                        <p class="text-slate-400 italic">Carregando sugestões...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 3: RESERVA -->
+        <section id="aba-reserva" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-slate-800 border border-slate-700 p-4 sm:p-6 rounded-xl shadow space-y-4 sm:space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
 
         alert('Dados enviados com sucesso para o Google Sheets!');
     } catch(err) {
